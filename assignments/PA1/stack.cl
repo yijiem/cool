@@ -89,6 +89,11 @@ class IntCommand inherits StackCommand {
 class Main inherits IO {
 
    stack : Stack;
+   command : StackCommand;
+   e1 : StackCommand;
+   e2 : StackCommand;
+   i1 : IntCommand;
+   i2 : IntCommand;
 
    main() : Object {
       {
@@ -102,60 +107,45 @@ class Main inherits IO {
                   if s = "d" then stack.display() else
                   if s = "e" then {
 		     if not stack.isNil() then {
-                        (let command : StackCommand <- stack.top() in
-		           {
-		              stack <- stack.pop();
-           	              case command of
-           	                 p : PlusCommand => {
-           	                    (let e1 : StackCommand <- stack.top() in
-		           	       {
-           	                          stack <- stack.pop();
-					  if not stack.isNil() then {
-           	                             (let e2 : StackCommand <- stack.top() in
-		           	                {
-           	                                   stack <- stack.pop();
-		           		           -- This sucks...
-		           		           case e1 of
-		           		              i1 : IntCommand => {
-		           		                 case e2 of
-		           		                    i2 : IntCommand => {
-           	                                                  stack <- stack.push(new IntCommand.init(i1.value() + i2.value()));
-		           		                    };
-		           		                    x : Object => { abort(); };
-		           		                 esac;
-		           		              };
-		           		              x : Object => { abort(); };
-		           		           esac;
-		           		        }
-		           	             );
-				          }
-					  else 0
-					  fi;
-		           	       }
-		          	    );
-           	                 };
-           	                 s : SwapCommand => {
-           	                    (let e1 : StackCommand <- stack.top() in
-		           	       {
-           	                          stack <- stack.pop();
-					  if not stack.isNil() then {
-           	                             (let e2 : StackCommand <- stack.top() in
-		           	                {
-           	                                   stack <- stack.pop();
-           	                                   stack <- stack.push(e1);
-           	                                   stack <- stack.push(e2);
-		           		        }
-		           	             );
-				          }
-					  else 0
-					  fi;
-		           	       }
-		           	    );
-           	                 };
-           	                 x : Object => 0;
-           	              esac;
-			   }
-		        );
+		        command <- stack.top();
+		        stack <- stack.pop();
+           	        case command of
+           	           p : PlusCommand => {
+			      e1 <- stack.top();
+           	              stack <- stack.pop();
+			      if not stack.isNil() then {
+			         e2 <- stack.top();
+           	                 stack <- stack.pop();
+		           	 -- This sucks...
+		                 case e1 of
+				    i1 : IntCommand => {
+				       case e2 of
+				          i2 : IntCommand => {
+				             stack <- stack.push(new IntCommand.init(i1.value() + i2.value()));
+				          };
+				          x : Object => { abort(); };
+				       esac;
+				    };
+				    x : Object => { abort(); };
+			         esac;
+			      }
+			      else 0
+			      fi;
+           	           };
+			   s : SwapCommand => {
+			      e1 <- stack.top();
+			      stack <- stack.pop();
+			      if not stack.isNil() then {
+			         e2 <- stack.top();
+				 stack <- stack.pop();
+				 stack <- stack.push(e1);
+				 stack <- stack.push(e2);
+			      }
+			      else 0
+			      fi;
+			   };
+			   x : Object => 0;
+		        esac;
 		     }
 		     else 0
 		     fi;
