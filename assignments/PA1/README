@@ -61,7 +61,20 @@ Questions on PA1
 
 
 2. List 3 things that you like about the Cool programming language.
+I like the type system and rule (the "comform to"). Clear and simple to follow.
+The case expression is very powerful!
 
 
 3. List 3 things you DON'T like about Cool.
+Some syntax is weird.
+Not very clear whether the object is pass-by-pointer|reference or pass-by-value.
+No explicit constructor/destructor.
+No return keyword.
+It's weird that a class needs to inherit from IO class to be able to use its
+methods. Why can't I create an IO object or have static methods?
+No explicit include syntax. Making intra-file dependency hard to follow.
+The Blocks syntax feels really redundant.
+"Let" sucks...
+No logical operator sucks...
+Semicolon sucks...
 
